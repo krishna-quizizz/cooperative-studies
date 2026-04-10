@@ -13,7 +13,7 @@ async def generate_tasks(req: GenerateRequest):
     if not topic:
         raise HTTPException(status_code=404, detail="Topic not found")
 
-    roles, script = await generate_roles_and_script(topic, req.group_size)
+    roles, script = await generate_roles_and_script(topic, req.group_size, req.num_tables)
 
     return GenerateResponse(
         topic_id=req.topic_id,

@@ -10,11 +10,11 @@ export async function fetchTopic(topicId) {
   return res.json();
 }
 
-export async function generateTasks(topicId, groupSize = 4) {
+export async function generateTasks(topicId, groupSize = 4, numTables = 3) {
   const res = await fetch(`${BASE}/generate-tasks`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ topic_id: topicId, group_size: groupSize }),
+    body: JSON.stringify({ topic_id: topicId, group_size: groupSize, num_tables: numTables }),
   });
   return res.json();
 }

@@ -1,49 +1,96 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { getSession, subscribeToSession, controlSession } from '../api';
-import StudentTable from '../components/StudentTable';
-import AlertBadge from '../components/AlertBadge';
-import DiscussionFeed from '../components/DiscussionFeed';
+import TableCard from '../components/TableCard';
+
+function groupByTable(roles) {
+  const tables = {};
+  for (const role of roles) {
+    const tid = role.table_id || 1;
+    if (!tables[tid]) tables[tid] = [];
+    tables[tid].push(role);
+  }
+  return tables;
+}
 
 function TeacherDashboard() {
   const { sessionId } = useParams();
   const [session, setSession] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [currentSpeaker, setCurrentSpeaker] = useState(null);
-  const [currentText, setCurrentText] = useState('');
-  const [lastMessages, setLastMessages] = useState({});
-  const [alerts, setAlerts] = useState([]);
   const [streaming, setStreaming] = useState(false);
+
+  const [tableState, setTableState] = useState({});
 
   useEffect(() => {
     getSession(sessionId).then(setSession);
   }, [sessionId]);
+
+  const tableGroups = useMemo(() => {
+    if (!session) return {};
+    return groupByTable(session.roles);
+  }, [session]);
+
+  useEffect(() => {
+    if (!session) return;
+    const initial = {};
+    for (const tid of Object.keys(tableGroups)) {
+      initial[tid] = { messages: [], currentSpeaker: null, currentText: '', alerts: [] };
+    }
+    setTableState(initial);
+  }, [session, tableGroups]);
 
   const handleStart = async () => {
     await controlSession(sessionId, 'start');
     setStreaming(true);
 
     subscribeToSession(sessionId, (event, data) => {
+      const tid = data.table_id || 1;
+
       switch (event) {
         case 'speaker':
-          setCurrentSpeaker(data.speaker);
-          setCurrentText('');
+          setTableState((prev) => ({
+            ...prev,
+            [tid]: { ...prev[tid], currentSpeaker: data.speaker, currentText: '' },
+          }));
           break;
         case 'word':
-          setCurrentText((prev) => (prev ? prev + ' ' + data.word : data.word));
+          setTableState((prev) => ({
+            ...prev,
+            [tid]: {
+              ...prev[tid],
+              currentText: prev[tid]?.currentText
+                ? prev[tid].currentText + ' ' + data.word
+                : data.word,
+            },
+          }));
           break;
         case 'line_complete':
-          setMessages((prev) => [...prev, { speaker: data.speaker, text: data.text, is_alert: data.is_alert }]);
-          setLastMessages((prev) => ({ ...prev, [data.speaker]: data.text }));
-          setCurrentSpeaker(null);
-          setCurrentText('');
-          if (data.is_alert) {
-            setAlerts((prev) => [...prev, { speaker: data.speaker, text: data.text }]);
-          }
+          setTableState((prev) => {
+            const ts = prev[tid] || { messages: [], alerts: [] };
+            const newMsg = { speaker: data.speaker, text: data.text, is_alert: data.is_alert };
+            const newAlerts = data.is_alert
+              ? [...ts.alerts, { speaker: data.speaker, text: data.text }]
+              : ts.alerts;
+            return {
+              ...prev,
+              [tid]: {
+                ...ts,
+                messages: [...ts.messages, newMsg],
+                alerts: newAlerts,
+                currentSpeaker: null,
+                currentText: '',
+              },
+            };
+          });
           break;
         case 'done':
           setStreaming(false);
-          setCurrentSpeaker(null);
+          setTableState((prev) => {
+            const next = { ...prev };
+            for (const t of Object.keys(next)) {
+              next[t] = { ...next[t], currentSpeaker: null };
+            }
+            return next;
+          });
           break;
       }
     });
@@ -58,39 +105,42 @@ function TeacherDashboard() {
     );
   }
 
+  const tableIds = Object.keys(tableGroups).sort((a, b) => a - b);
+
   return (
-    <>
-      <header className="app-header">
+    <div className="teacher-dashboard">
+      <div className="page-header">
         <h1>Teacher Dashboard</h1>
         <span className="badge">{session.topic.title}</span>
-      </header>
-      <div className="teacher-dashboard">
-        {!streaming && messages.length === 0 && (
-          <div style={{ marginBottom: '1rem' }}>
+      </div>
+
+      <div style={{ padding: '0 2rem 1.5rem' }}>
+        {!streaming && Object.values(tableState).every((t) => t.messages.length === 0) && (
+          <div style={{ marginBottom: '1.25rem' }}>
             <button className="btn btn-success" onClick={handleStart}>
               Start Discussion
             </button>
           </div>
         )}
 
-        <AlertBadge alerts={alerts} />
-
-        <h2>Students</h2>
-        <StudentTable
-          roles={session.roles}
-          currentSpeaker={currentSpeaker}
-          lastMessages={lastMessages}
-        />
-
-        <h2>Discussion Transcript</h2>
-        <DiscussionFeed
-          messages={messages}
-          currentText={currentText}
-          currentSpeaker={currentSpeaker}
-          roles={session.roles}
-        />
+        <div className="table-cards-grid">
+          {tableIds.map((tid) => {
+            const ts = tableState[tid] || { messages: [], currentSpeaker: null, currentText: '', alerts: [] };
+            return (
+              <TableCard
+                key={tid}
+                tableId={tid}
+                roles={tableGroups[tid]}
+                messages={ts.messages}
+                currentSpeaker={ts.currentSpeaker}
+                currentText={ts.currentText}
+                alerts={ts.alerts}
+              />
+            );
+          })}
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 

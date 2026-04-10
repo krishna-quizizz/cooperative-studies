@@ -12,7 +12,9 @@ function TopicSetup() {
   const [sessionId, setSessionId] = useState(null);
 
   useEffect(() => {
-    fetchTopics().then(setTopics);
+    fetchTopics()
+      .then(setTopics)
+      .catch((err) => console.error('Failed to fetch topics:', err));
   }, []);
 
   const handleSelect = (topic) => {
@@ -48,27 +50,21 @@ function TopicSetup() {
   };
 
   return (
-    <>
-      <header className="app-header">
-        <h1>Cooperative Studies</h1>
-        <span className="badge">Group Discussion Platform</span>
-      </header>
-      <div className="topic-setup">
-        <TopicList
-          topics={topics}
-          selectedId={selectedTopic?.id}
-          onSelect={handleSelect}
-        />
-        <TopicDetail
-          topic={selectedTopic}
-          roles={roles}
-          onGenerate={handleGenerate}
-          onStart={handleStart}
-          generating={generating}
-          sessionId={sessionId}
-        />
-      </div>
-    </>
+    <div className="topic-setup">
+      <TopicList
+        topics={topics}
+        selectedId={selectedTopic?.id}
+        onSelect={handleSelect}
+      />
+      <TopicDetail
+        topic={selectedTopic}
+        roles={roles}
+        onGenerate={handleGenerate}
+        onStart={handleStart}
+        generating={generating}
+        sessionId={sessionId}
+      />
+    </div>
   );
 }
 

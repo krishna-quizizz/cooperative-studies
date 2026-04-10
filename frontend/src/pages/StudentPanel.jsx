@@ -1,45 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getSession, subscribeToSession } from '../api';
+import { getSession } from '../api';
+import { useSessionState } from '../context/SessionContext';
 import SeatingArrangement from '../components/SeatingArrangement';
 import DiscussionFeed from '../components/DiscussionFeed';
 
 function StudentPanel() {
   const { sessionId } = useParams();
   const [session, setSession] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [currentSpeaker, setCurrentSpeaker] = useState(null);
-  const [currentText, setCurrentText] = useState('');
-  const [started, setStarted] = useState(false);
+  const { state, ensureSubscribed } = useSessionState(sessionId);
 
   useEffect(() => {
     getSession(sessionId).then(setSession);
   }, [sessionId]);
 
   useEffect(() => {
-    if (!session || started) return;
-    setStarted(true);
-
-    subscribeToSession(sessionId, (event, data) => {
-      switch (event) {
-        case 'speaker':
-          setCurrentSpeaker(data.speaker);
-          setCurrentText('');
-          break;
-        case 'word':
-          setCurrentText((prev) => (prev ? prev + ' ' + data.word : data.word));
-          break;
-        case 'line_complete':
-          setMessages((prev) => [...prev, { speaker: data.speaker, text: data.text, is_alert: data.is_alert }]);
-          setCurrentSpeaker(null);
-          setCurrentText('');
-          break;
-        case 'done':
-          setCurrentSpeaker(null);
-          break;
-      }
-    });
-  }, [session, sessionId, started]);
+    if (!session) return;
+    ensureSubscribed(sessionId);
+  }, [session, sessionId, ensureSubscribed]);
 
   if (!session) {
     return (
@@ -51,24 +29,24 @@ function StudentPanel() {
   }
 
   return (
-    <>
-      <header className="app-header">
+    <div>
+      <div className="page-header">
         <h1>Group Discussion</h1>
         <span className="badge">{session.topic.title}</span>
-      </header>
+      </div>
       <div className="student-panel">
         <SeatingArrangement
           roles={session.roles}
-          currentSpeaker={currentSpeaker}
+          currentSpeaker={state.currentSpeaker}
         />
         <DiscussionFeed
-          messages={messages}
-          currentText={currentText}
-          currentSpeaker={currentSpeaker}
+          messages={state.messages}
+          currentText={state.currentText}
+          currentSpeaker={state.currentSpeaker}
           roles={session.roles}
         />
       </div>
-    </>
+    </div>
   );
 }
 
