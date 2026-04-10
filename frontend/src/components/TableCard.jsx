@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import DiscussionFeed from './DiscussionFeed';
 
 function StatusIcon({ status }) {
@@ -21,7 +21,7 @@ function StatusIcon({ status }) {
   );
 }
 
-function TableCard({ tableId, roles, messages, currentSpeaker, currentText, alerts }) {
+const TableCard = memo(function TableCard({ tableId, roles, messages, currentSpeaker, currentText, alerts }) {
   const [expanded, setExpanded] = useState(false);
 
   const hasAlert = alerts.length > 0;
@@ -82,6 +82,6 @@ function TableCard({ tableId, roles, messages, currentSpeaker, currentText, aler
       </div>
     </div>
   );
-}
+});
 
 export default TableCard;

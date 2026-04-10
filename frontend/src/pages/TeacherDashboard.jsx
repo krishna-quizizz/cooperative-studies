@@ -1,7 +1,9 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { getSession, subscribeToSession, controlSession } from '../api';
 import TableCard from '../components/TableCard';
+
+const FLUSH_INTERVAL_MS = 250;
 
 function groupByTable(roles) {
   const tables = {};
@@ -17,8 +19,8 @@ function TeacherDashboard() {
   const { sessionId } = useParams();
   const [session, setSession] = useState(null);
   const [streaming, setStreaming] = useState(false);
-
   const [tableState, setTableState] = useState({});
+  const pendingWordsRef = useRef({});
 
   useEffect(() => {
     getSession(sessionId).then(setSession);
@@ -38,7 +40,31 @@ function TeacherDashboard() {
     setTableState(initial);
   }, [session, tableGroups]);
 
-  const handleStart = async () => {
+  // Periodic flush of accumulated word events
+  useEffect(() => {
+    const id = setInterval(() => {
+      const pending = pendingWordsRef.current;
+      const tids = Object.keys(pending);
+      if (tids.length === 0) return;
+
+      pendingWordsRef.current = {};
+      setTableState((prev) => {
+        const next = { ...prev };
+        for (const tid of tids) {
+          const ts = next[tid];
+          if (!ts) continue;
+          next[tid] = {
+            ...ts,
+            currentText: ts.currentText ? ts.currentText + ' ' + pending[tid] : pending[tid],
+          };
+        }
+        return next;
+      });
+    }, FLUSH_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, []);
+
+  const handleStart = useCallback(async () => {
     await controlSession(sessionId, 'start');
     setStreaming(true);
 
@@ -52,18 +78,15 @@ function TeacherDashboard() {
             [tid]: { ...prev[tid], currentSpeaker: data.speaker, currentText: '' },
           }));
           break;
-        case 'word':
-          setTableState((prev) => ({
-            ...prev,
-            [tid]: {
-              ...prev[tid],
-              currentText: prev[tid]?.currentText
-                ? prev[tid].currentText + ' ' + data.word
-                : data.word,
-            },
-          }));
+
+        case 'word': {
+          const prev = pendingWordsRef.current[tid];
+          pendingWordsRef.current[tid] = prev ? prev + ' ' + data.word : data.word;
           break;
+        }
+
         case 'line_complete':
+          pendingWordsRef.current[tid] = undefined;
           setTableState((prev) => {
             const ts = prev[tid] || { messages: [], alerts: [] };
             const newMsg = { speaker: data.speaker, text: data.text, is_alert: data.is_alert };
@@ -82,6 +105,7 @@ function TeacherDashboard() {
             };
           });
           break;
+
         case 'done':
           setStreaming(false);
           setTableState((prev) => {
@@ -94,7 +118,7 @@ function TeacherDashboard() {
           break;
       }
     });
-  };
+  }, [sessionId]);
 
   if (!session) {
     return (

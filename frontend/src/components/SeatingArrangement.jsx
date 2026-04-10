@@ -1,4 +1,6 @@
-function SeatingArrangement({ roles, currentSpeaker }) {
+import { memo } from 'react';
+
+const SeatingArrangement = memo(function SeatingArrangement({ roles, currentSpeaker }) {
   const radius = 150;
   const centerX = 200;
   const centerY = 200;
@@ -32,6 +34,7 @@ function SeatingArrangement({ roles, currentSpeaker }) {
       </div>
     </div>
   );
-}
+});
 
 export default SeatingArrangement;
+

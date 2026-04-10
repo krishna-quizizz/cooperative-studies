@@ -1,7 +1,7 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, memo } from 'react';
 import ChatBubble from './ChatBubble';
 
-function DiscussionFeed({ messages, currentText, currentSpeaker, roles }) {
+const DiscussionFeed = memo(function DiscussionFeed({ messages, currentText, currentSpeaker, roles }) {
   const feedRef = useRef(null);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ function DiscussionFeed({ messages, currentText, currentSpeaker, roles }) {
     <div className="discussion-feed" ref={feedRef}>
       {messages.map((msg, i) => (
         <ChatBubble
-          key={i}
+          key={`${msg.speaker}-${msg.table_id ?? 0}-${i}`}
           speaker={msg.speaker}
           text={msg.text}
           isAlert={msg.is_alert}
@@ -31,6 +31,6 @@ function DiscussionFeed({ messages, currentText, currentSpeaker, roles }) {
       )}
     </div>
   );
-}
+});
 
 export default DiscussionFeed;

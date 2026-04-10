@@ -1,6 +1,27 @@
+import { useState, useEffect } from 'react';
 import RoleCard from './RoleCard';
 
+const GENERATION_STEPS = [
+  'Analyzing topic and building expert roles...',
+  'Crafting discussion dynamics...',
+  'Writing multi-table script...',
+  'Finalizing roles and dialogue...',
+];
+
 function TopicDetail({ topic, roles, onGenerate, onStart, generating, sessionId }) {
+  const [stepIndex, setStepIndex] = useState(0);
+
+  useEffect(() => {
+    if (!generating) {
+      setStepIndex(0);
+      return;
+    }
+    const interval = setInterval(() => {
+      setStepIndex((prev) => (prev < GENERATION_STEPS.length - 1 ? prev + 1 : prev));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [generating]);
+
   if (!topic) {
     return (
       <div className="topic-detail">
@@ -32,9 +53,28 @@ function TopicDetail({ topic, roles, onGenerate, onStart, generating, sessionId 
       </div>
 
       {generating && (
-        <div className="loading">
-          <div className="spinner" />
-          <span>Claude is generating roles and discussion script...</span>
+        <div className="generation-progress">
+          <div className="generation-progress-bar">
+            <div
+              className="generation-progress-fill"
+              style={{ width: `${((stepIndex + 1) / GENERATION_STEPS.length) * 100}%` }}
+            />
+          </div>
+          <div className="generation-steps">
+            {GENERATION_STEPS.map((step, i) => (
+              <div
+                key={i}
+                className={`generation-step ${i < stepIndex ? 'done' : ''} ${i === stepIndex ? 'active' : ''}`}
+              >
+                <span className="generation-step-icon">
+                  {i < stepIndex ? '✓' : i === stepIndex ? '' : ''}
+                </span>
+                <span>{step}</span>
+                {i === stepIndex && <span className="generation-step-spinner" />}
+              </div>
+            ))}
+          </div>
+          <p className="generation-eta">This usually takes 15–20 seconds</p>
         </div>
       )}
 
