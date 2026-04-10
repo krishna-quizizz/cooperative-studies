@@ -1,0 +1,32 @@
+[
+  {
+    "id": "water-conservation",
+    "title": "Create a Bill on Water Conservation",
+    "description": "Draft and debate a legislative bill addressing water conservation in urban and rural areas. Consider economic impact, implementation challenges, and environmental benefits. Each group member will take on a different stakeholder perspective to create a comprehensive discussion.",
+    "category": "Policy"
+  },
+  {
+    "id": "ai-education",
+    "title": "AI in Education: Boon or Bane?",
+    "description": "Discuss the impact of artificial intelligence on modern education systems. Should AI tools be embraced in classrooms or regulated? Consider effects on learning outcomes, teacher roles, equity, and student development.",
+    "category": "Technology"
+  },
+  {
+    "id": "universal-basic-income",
+    "title": "Should India Implement Universal Basic Income?",
+    "description": "Debate the feasibility and impact of implementing Universal Basic Income in India. Analyze economic sustainability, social impact, inflation risks, and compare with existing welfare programs.",
+    "category": "Economics"
+  },
+  {
+    "id": "space-exploration",
+    "title": "Space Exploration vs. Solving Earth's Problems",
+    "description": "Should governments prioritize space exploration or focus resources on solving pressing issues on Earth like poverty, climate change, and healthcare? Discuss the trade-offs, long-term benefits, and ethical considerations.",
+    "category": "Science"
+  },
+  {
+    "id": "social-media-regulation",
+    "title": "Should Social Media Be Regulated by Government?",
+    "description": "Debate whether governments should regulate social media platforms. Consider free speech, misinformation, mental health impacts, data privacy, and the role of tech companies in self-governance.",
+    "category": "Society"
+  }
+]
