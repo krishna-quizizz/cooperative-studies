@@ -178,32 +178,15 @@ async def generate_roles_and_script(
 
 
 def _load_fallback(num_tables: int = 3) -> tuple[list[StudentRole], list[ScriptLine]]:
-    base_roles = [
-        ("Economist", "Analyze the economic implications and cost-benefit trade-offs."),
-        ("CEO", "Represent the business perspective and discuss corporate responsibility."),
-        ("Environmentalist", "Advocate for environmental protection and sustainability."),
-        ("Policy Advisor", "Propose practical policy frameworks and implementation strategies."),
-        ("Journalist", "Investigate and report on the public impact of the issue."),
-        ("Data Scientist", "Provide statistical evidence and data-driven insights."),
-        ("Community Leader", "Represent grassroots community concerns and needs."),
-        ("Legal Expert", "Analyze regulatory frameworks and legal implications."),
-        ("Urban Planner", "Consider infrastructure and city planning perspectives."),
-        ("Health Specialist", "Assess public health implications and risks."),
-        ("Educator", "Focus on awareness and educational outreach strategies."),
-        ("Tech Innovator", "Propose technology-based solutions and innovations."),
-    ]
-
-    total_students = min(len(base_roles), 4 * num_tables)
-    roles = [
-        StudentRole(
-            role_name=base_roles[i][0],
-            student_label=f"student_{chr(65 + i)}",
-            task=base_roles[i][1],
-        )
-        for i in range(total_students)
-    ]
+    with open(DATA_DIR / "sample_roles.json") as f:
+        all_roles = [StudentRole(**r) for r in json.load(f)]
 
     with open(DATA_DIR / "sample_script.json") as f:
-        script = [ScriptLine(**s) for s in json.load(f)]
+        all_script = [ScriptLine(**s) for s in json.load(f)]
 
-    return _assign_tables(roles, script, num_tables)
+    # JSON files are pre-built for 3 tables; filter if fewer requested
+    valid_tables = set(range(1, num_tables + 1))
+    roles = [r for r in all_roles if r.table_id in valid_tables]
+    script = [s for s in all_script if s.table_id in valid_tables]
+
+    return roles, script

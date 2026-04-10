@@ -1,0 +1,74 @@
+[
+  {
+    "role_name": "Economist",
+    "student_label": "student_A",
+    "task": "Analyze the economic implications and cost-benefit trade-offs.",
+    "table_id": 1
+  },
+  {
+    "role_name": "CEO",
+    "student_label": "student_B",
+    "task": "Represent the business perspective and discuss corporate responsibility.",
+    "table_id": 1
+  },
+  {
+    "role_name": "Environmentalist",
+    "student_label": "student_C",
+    "task": "Advocate for environmental protection and sustainability.",
+    "table_id": 1
+  },
+  {
+    "role_name": "Policy Advisor",
+    "student_label": "student_D",
+    "task": "Propose practical policy frameworks and implementation strategies.",
+    "table_id": 1
+  },
+  {
+    "role_name": "Journalist",
+    "student_label": "student_E",
+    "task": "Investigate and report on the public impact of the issue.",
+    "table_id": 2
+  },
+  {
+    "role_name": "Data Scientist",
+    "student_label": "student_F",
+    "task": "Provide statistical evidence and data-driven insights.",
+    "table_id": 2
+  },
+  {
+    "role_name": "Community Leader",
+    "student_label": "student_G",
+    "task": "Represent grassroots community concerns and needs.",
+    "table_id": 2
+  },
+  {
+    "role_name": "Legal Expert",
+    "student_label": "student_H",
+    "task": "Analyze regulatory frameworks and legal implications.",
+    "table_id": 2
+  },
+  {
+    "role_name": "Urban Planner",
+    "student_label": "student_I",
+    "task": "Consider infrastructure and city planning perspectives.",
+    "table_id": 3
+  },
+  {
+    "role_name": "Health Specialist",
+    "student_label": "student_J",
+    "task": "Assess public health implications and risks.",
+    "table_id": 3
+  },
+  {
+    "role_name": "Educator",
+    "student_label": "student_K",
+    "task": "Focus on awareness and educational outreach strategies.",
+    "table_id": 3
+  },
+  {
+    "role_name": "Tech Innovator",
+    "student_label": "student_L",
+    "task": "Propose technology-based solutions and innovations.",
+    "table_id": 3
+  }
+]

@@ -14,6 +14,7 @@ export function SessionProvider({ children }) {
       sessionStates[sessionId] ?? {
         messages: [],
         currentSpeaker: null,
+        currentTableId: null,
         currentText: '',
         started: false,
       },
@@ -26,11 +27,11 @@ export function SessionProvider({ children }) {
 
       const source = subscribeToSession(sessionId, (event, data) => {
         setSessionStates((prev) => {
-          const cur = prev[sessionId] ?? { messages: [], currentSpeaker: null, currentText: '', started: true };
+          const cur = prev[sessionId] ?? { messages: [], currentSpeaker: null, currentTableId: null, currentText: '', started: true };
 
           switch (event) {
             case 'speaker':
-              return { ...prev, [sessionId]: { ...cur, currentSpeaker: data.speaker, currentText: '' } };
+              return { ...prev, [sessionId]: { ...cur, currentSpeaker: data.speaker, currentTableId: data.table_id, currentText: '' } };
 
             case 'word':
               return {
@@ -46,7 +47,7 @@ export function SessionProvider({ children }) {
                 ...prev,
                 [sessionId]: {
                   ...cur,
-                  messages: [...cur.messages, { speaker: data.speaker, text: data.text, is_alert: data.is_alert }],
+                  messages: [...cur.messages, { speaker: data.speaker, text: data.text, is_alert: data.is_alert, table_id: data.table_id }],
                   currentSpeaker: null,
                   currentText: '',
                 },
@@ -67,7 +68,7 @@ export function SessionProvider({ children }) {
         ...prev,
         [sessionId]: prev[sessionId]
           ? { ...prev[sessionId], started: true }
-          : { messages: [], currentSpeaker: null, currentText: '', started: true },
+          : { messages: [], currentSpeaker: null, currentTableId: null, currentText: '', started: true },
       }));
     },
     []

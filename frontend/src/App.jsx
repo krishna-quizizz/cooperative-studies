@@ -16,6 +16,7 @@ function App() {
               <Route path="/" element={<TopicSetup />} />
               <Route path="/teacher/session/:sessionId" element={<TeacherDashboard />} />
               <Route path="/student/session/:sessionId" element={<StudentPanel />} />
+              <Route path="/student/session/:sessionId/table/:tableId" element={<StudentPanel />} />
             </Routes>
           </main>
         </div>

@@ -1,77 +1,45 @@
 [
-  {
-    "speaker": "student_A",
-    "text": "As an economist, I believe water conservation bills must balance environmental goals with economic reality. We need to consider the cost of infrastructure upgrades for farmers and industries.",
-    "is_alert": false
-  },
-  {
-    "speaker": "student_B",
-    "text": "From a CEO's perspective, I think businesses can actually benefit from water conservation. Companies that adopt sustainable practices early gain a competitive edge and consumer trust.",
-    "is_alert": false
-  },
-  {
-    "speaker": "AI_agent",
-    "text": "Great points from both sides! Student C, as an environmentalist, what's your take on the urgency of this bill? How do current water usage trends factor in?",
-    "is_alert": false
-  },
-  {
-    "speaker": "student_C",
-    "text": "The urgency is critical. According to recent studies, many major cities could face severe water shortages within the next decade. We can't afford to wait for market forces alone.",
-    "is_alert": false
-  },
-  {
-    "speaker": "student_D",
-    "text": "As a policy advisor, I'd suggest a phased approach. Start with incentives for voluntary conservation, then gradually introduce mandatory regulations based on results.",
-    "is_alert": false
-  },
-  {
-    "speaker": "student_A",
-    "text": "A phased approach makes economic sense. Sudden regulations could hurt small businesses disproportionately. We need transition support programs.",
-    "is_alert": false
-  },
-  {
-    "speaker": "AI_agent",
-    "text": "I notice the discussion is focusing mainly on urban water use. Should we also address agricultural water consumption, which accounts for about 70% of total usage?",
-    "is_alert": true
-  },
-  {
-    "speaker": "student_B",
-    "text": "That's a great point. Agricultural water pricing is heavily subsidized in many regions. Reforming those subsidies could be more impactful than urban regulations.",
-    "is_alert": false
-  },
-  {
-    "speaker": "student_C",
-    "text": "But we need to be careful not to harm food security. Perhaps the bill should include provisions for water-efficient farming technologies and training.",
-    "is_alert": false
-  },
-  {
-    "speaker": "student_D",
-    "text": "I agree. The bill should have separate sections for urban, industrial, and agricultural water use, each with tailored approaches and timelines.",
-    "is_alert": false
-  },
-  {
-    "speaker": "AI_agent",
-    "text": "Excellent synthesis! Let's now discuss enforcement. How should compliance be monitored and what penalties should exist for violations?",
-    "is_alert": false
-  },
-  {
-    "speaker": "student_A",
-    "text": "Economic penalties should scale with the size of the violator. A multinational corporation should face steeper fines than a small local business.",
-    "is_alert": false
-  },
-  {
-    "speaker": "student_B",
-    "text": "I'd also add positive incentives - tax breaks or public recognition for companies exceeding conservation targets. Carrots work better than sticks.",
-    "is_alert": false
-  },
-  {
-    "speaker": "student_C",
-    "text": "We should also consider community-level monitoring. Local water bodies and citizen groups can play a role in reporting violations.",
-    "is_alert": false
-  },
-  {
-    "speaker": "AI_agent",
-    "text": "The group has covered economic, environmental, policy, and business perspectives very well. Let's wrap up with each member suggesting one key provision they'd include in the final bill.",
-    "is_alert": true
-  }
+  {"speaker": "AI_agent", "text": "Welcome everyone. Today we're discussing water conservation policy. Let's start with the economic perspective. Student A, what are your thoughts?", "is_alert": false, "table_id": 1},
+  {"speaker": "student_A", "text": "As an economist, I believe water conservation bills must balance environmental goals with economic reality. We need to consider the cost of infrastructure upgrades for farmers and industries.", "is_alert": false, "table_id": 1},
+  {"speaker": "student_B", "text": "From a CEO's perspective, I think businesses can actually benefit from water conservation. Companies that adopt sustainable practices early gain a competitive edge and consumer trust.", "is_alert": false, "table_id": 1},
+  {"speaker": "AI_agent", "text": "Great points from both sides! Student C, as an environmentalist, what's your take on the urgency of this bill? How do current water usage trends factor in?", "is_alert": false, "table_id": 1},
+  {"speaker": "student_C", "text": "The urgency is critical. According to recent studies, many major cities could face severe water shortages within the next decade. We can't afford to wait for market forces alone.", "is_alert": false, "table_id": 1},
+  {"speaker": "student_D", "text": "As a policy advisor, I'd suggest a phased approach. Start with incentives for voluntary conservation, then gradually introduce mandatory regulations based on results.", "is_alert": false, "table_id": 1},
+  {"speaker": "student_A", "text": "A phased approach makes economic sense. Sudden regulations could hurt small businesses disproportionately. We need transition support programs.", "is_alert": false, "table_id": 1},
+  {"speaker": "AI_agent", "text": "I notice the discussion is focusing mainly on urban water use. Should we also address agricultural water consumption, which accounts for about 70% of total usage?", "is_alert": true, "table_id": 1},
+  {"speaker": "student_B", "text": "That's a great point. Agricultural water pricing is heavily subsidized in many regions. Reforming those subsidies could be more impactful than urban regulations.", "is_alert": false, "table_id": 1},
+  {"speaker": "student_C", "text": "But we need to be careful not to harm food security. Perhaps the bill should include provisions for water-efficient farming technologies and training.", "is_alert": false, "table_id": 1},
+  {"speaker": "student_D", "text": "I agree. The bill should have separate sections for urban, industrial, and agricultural water use, each with tailored approaches and timelines.", "is_alert": false, "table_id": 1},
+  {"speaker": "AI_agent", "text": "Excellent synthesis! Let's now discuss enforcement. How should compliance be monitored and what penalties should exist for violations?", "is_alert": false, "table_id": 1},
+  {"speaker": "student_A", "text": "Economic penalties should scale with the size of the violator. A multinational corporation should face steeper fines than a small local business.", "is_alert": false, "table_id": 1},
+  {"speaker": "student_B", "text": "I'd also add positive incentives — tax breaks or public recognition for companies exceeding conservation targets. Carrots work better than sticks.", "is_alert": false, "table_id": 1},
+  {"speaker": "AI_agent", "text": "The group has covered economic, environmental, policy, and business perspectives very well. Let's wrap up with each member suggesting one key provision they'd include in the final bill.", "is_alert": true, "table_id": 1},
+
+  {"speaker": "AI_agent", "text": "Welcome to Table 2. We're examining the media, data, community, and legal dimensions of water conservation. Student E, what stories are you seeing in the field?", "is_alert": false, "table_id": 2},
+  {"speaker": "student_E", "text": "As a journalist, I've covered dozens of communities hit by water shortages. The human stories are devastating — families rationing water, farmers losing crops. The public needs to see these realities.", "is_alert": false, "table_id": 2},
+  {"speaker": "student_F", "text": "The data backs that up. Our analysis shows water tables dropping 15% over the last decade in major agricultural regions. At current rates, several aquifers face depletion within 20 years.", "is_alert": false, "table_id": 2},
+  {"speaker": "AI_agent", "text": "Student G, how are communities on the ground responding to these challenges?", "is_alert": false, "table_id": 2},
+  {"speaker": "student_G", "text": "Community-led initiatives are already showing results. In my district, neighborhood water councils reduced consumption by 25% through peer education and shared monitoring.", "is_alert": false, "table_id": 2},
+  {"speaker": "student_H", "text": "From a legal standpoint, existing water rights frameworks are outdated. Many date back over a century and don't account for modern usage patterns or climate change.", "is_alert": false, "table_id": 2},
+  {"speaker": "student_E", "text": "That's exactly what my reporting found. The legal framework creates perverse incentives — 'use it or lose it' policies encourage waste rather than conservation.", "is_alert": false, "table_id": 2},
+  {"speaker": "AI_agent", "text": "I want to flag something for the teacher: this group has identified a critical tension between existing legal water rights and modern conservation needs. This could be a key theme.", "is_alert": true, "table_id": 2},
+  {"speaker": "student_F", "text": "If we model the proposed reforms, the data suggests a 30-40% reduction in waste is achievable within five years, but only if enforcement is data-driven with real-time monitoring.", "is_alert": false, "table_id": 2},
+  {"speaker": "student_G", "text": "Real-time monitoring sounds good on paper, but rural communities lack the infrastructure. Any solution must include funding for technology access in underserved areas.", "is_alert": false, "table_id": 2},
+  {"speaker": "student_H", "text": "I'd propose a legal framework with tiered compliance. Federal baseline standards with state-level flexibility to account for regional differences in water availability.", "is_alert": false, "table_id": 2},
+  {"speaker": "student_E", "text": "Transparency is key. Public dashboards showing water usage by sector and region would create accountability and give journalists like me the data to keep officials honest.", "is_alert": false, "table_id": 2},
+  {"speaker": "AI_agent", "text": "Excellent work. This table has built a strong case for modernizing water law with data-driven enforcement and community involvement. Let's summarize your key recommendations.", "is_alert": false, "table_id": 2},
+
+  {"speaker": "AI_agent", "text": "Welcome to Table 3. We'll explore urban planning, health, education, and technology angles on water conservation. Student I, how does water factor into city design?", "is_alert": false, "table_id": 3},
+  {"speaker": "student_I", "text": "Urban planning is central to this issue. Cities built with green infrastructure — permeable surfaces, rain gardens, greywater recycling — can reduce water demand by up to 40%.", "is_alert": false, "table_id": 3},
+  {"speaker": "student_J", "text": "From a health perspective, water quality is just as important as quantity. Conservation measures must not compromise water treatment standards or we risk public health crises.", "is_alert": false, "table_id": 3},
+  {"speaker": "AI_agent", "text": "That's an important distinction. Student K, how can education help bridge the gap between policy and public behavior?", "is_alert": false, "table_id": 3},
+  {"speaker": "student_K", "text": "Education is the foundation. Studies show that school-based water conservation programs lead to household behavior changes. Kids influence their parents' habits more than any ad campaign.", "is_alert": false, "table_id": 3},
+  {"speaker": "student_L", "text": "Technology can accelerate all of this. Smart water meters, IoT leak detection, and AI-powered irrigation systems are already cutting waste by 30% in pilot programs.", "is_alert": false, "table_id": 3},
+  {"speaker": "student_I", "text": "The challenge is retrofitting existing cities. New developments can incorporate green infrastructure from the start, but older infrastructure needs massive investment.", "is_alert": false, "table_id": 3},
+  {"speaker": "AI_agent", "text": "Teacher note: this group is connecting infrastructure costs to equity concerns — older, lower-income neighborhoods bear the highest retrofit burden. Worth highlighting.", "is_alert": true, "table_id": 3},
+  {"speaker": "student_J", "text": "Exactly. Health disparities follow infrastructure disparities. Communities with aging pipes face both water loss from leaks and contamination risks from corroded materials.", "is_alert": false, "table_id": 3},
+  {"speaker": "student_K", "text": "We should integrate water literacy into the standard curriculum. Not just science class — economics, civics, and health classes should all address water stewardship.", "is_alert": false, "table_id": 3},
+  {"speaker": "student_L", "text": "I'd add that open-source water monitoring platforms could democratize data access. Communities shouldn't need expensive consultants to understand their water situation.", "is_alert": false, "table_id": 3},
+  {"speaker": "student_I", "text": "A national green infrastructure fund could help. Cities could apply for grants to retrofit water systems, prioritizing the most vulnerable neighborhoods first.", "is_alert": false, "table_id": 3},
+  {"speaker": "AI_agent", "text": "Outstanding discussion. Table 3 has woven together urban design, health equity, education reform, and tech innovation into a cohesive vision. Let's capture your top recommendations.", "is_alert": true, "table_id": 3}
 ]
