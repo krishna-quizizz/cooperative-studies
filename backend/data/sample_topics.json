@@ -28,5 +28,11 @@
     "title": "Should Social Media Be Regulated by Government?",
     "description": "Debate whether governments should regulate social media platforms. Consider free speech, misinformation, mental health impacts, data privacy, and the role of tech companies in self-governance.",
     "category": "Society"
+  },
+  {
+    "id": "ceta-2030",
+    "title": "CETA 2030: The Green Trade-Off",
+    "description": "A multi-stakeholder negotiation over the U.S. Lithium Battery tariff rate. Four experts — a Labor Union Representative, Consumer Advocate, State Department Diplomat, and Lead Climate Scientist — must negotiate a tariff level that balances domestic job security, household affordability, international trade relations, and the 2035 Net Zero climate target. Each expert holds unique data and a hidden insight that can unlock compromise.",
+    "category": "Economics"
   }
 ]

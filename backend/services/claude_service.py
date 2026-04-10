@@ -9,6 +9,16 @@ DATA_DIR = Path(__file__).parent.parent / "data"
 client = Anthropic(api_key=ANTHROPIC_API_KEY) if ANTHROPIC_API_KEY else None
 
 
+def _load_expert_cards(topic_id: str) -> list[dict] | None:
+    """Return expert card list for a topic if one exists, else None."""
+    try:
+        with open(DATA_DIR / "expert_cards.json") as f:
+            data = json.load(f)
+        return data.get(topic_id, {}).get("expert_cards")
+    except Exception:
+        return None
+
+
 def _assign_tables(
     roles: list[StudentRole],
     script: list[ScriptLine],
@@ -29,17 +39,78 @@ def _assign_tables(
     return roles, script
 
 
-async def generate_roles_and_script(
-    topic: Topic, group_size: int = 4, num_tables: int = 3,
-) -> tuple[list[StudentRole], list[ScriptLine]]:
-    total_students = group_size * num_tables
+def _roles_from_expert_cards(expert_cards: list[dict], num_tables: int) -> list[StudentRole]:
+    """Build StudentRole objects directly from expert card data, one set per table."""
+    roles = []
+    label_idx = 0
+    for table_id in range(1, num_tables + 1):
+        for card in expert_cards:
+            roles.append(StudentRole(
+                role_name=card["title"],
+                student_label=f"student_{chr(65 + label_idx)}",
+                task=f'{card["persona"]} Primary goal: {card["primary_goal"]}',
+                table_id=table_id,
+            ))
+            label_idx += 1
+    return roles
 
-    if not client:
-        return _load_fallback(num_tables)
 
+def _replicate_script_for_tables(
+    base_script: list[ScriptLine],
+    num_cards: int,
+    num_tables: int,
+) -> list[ScriptLine]:
+    """Replicate a single-table script across all tables with remapped student labels."""
+    all_lines = []
+    for t in range(num_tables):
+        offset = t * num_cards
+        label_map = {
+            f"student_{chr(65 + i)}": f"student_{chr(65 + offset + i)}"
+            for i in range(num_cards)
+        }
+        for line in base_script:
+            all_lines.append(ScriptLine(
+                speaker=label_map.get(line.speaker, line.speaker),
+                text=line.text,
+                is_alert=line.is_alert,
+                table_id=t + 1,
+            ))
+    return all_lines
+
+
+def _build_script_only_prompt(topic: Topic, expert_cards: list[dict]) -> str:
+    """Prompt Claude for just the script (roles are pre-built from expert card data)."""
+    num_cards = len(expert_cards)
+    card_descriptions = "\n".join(
+        f'- student_{chr(65 + i)} plays {c["title"]} ({c["name"]}): {c["persona"]} '
+        f'Primary goal: {c["primary_goal"]}'
+        for i, c in enumerate(expert_cards)
+    )
+    base_labels = ", ".join(f"student_{chr(65 + i)}" for i in range(num_cards))
+    return f"""You are facilitating a Jigsaw II negotiation session titled "{topic.title}".
+
+{topic.description}
+
+The four negotiators are:
+{card_descriptions}
+
+Write a realistic negotiation script of 14-18 exchanges using ONLY these speakers: {base_labels} and AI_agent.
+- AI_agent opens the session, asks probing questions, and guides toward compromise.
+- Each student argues from their expert position using their key data and goals.
+- Set is_alert to true for 2-3 pivotal moments where the teacher should intervene or spotlight a key trade-off.
+
+Return ONLY valid JSON — no markdown, no explanation:
+{{
+  "script": [
+    {{"speaker": "AI_agent", "text": "Welcome. Today we negotiate the CETA 2030 lithium tariff...", "is_alert": false}},
+    {{"speaker": "student_A", "text": "Our workers need a floor of at least 30%...", "is_alert": false}}
+  ]
+}}"""
+
+
+def _build_generic_prompt(topic: Topic, total_students: int, num_tables: int) -> str:
     student_labels = [f"student_{chr(65 + i)}" for i in range(total_students)]
-
-    prompt = f"""You are helping set up a classroom group discussion on the topic: "{topic.title}"
+    return f"""You are helping set up a classroom group discussion on the topic: "{topic.title}"
 
 {topic.description}
 
@@ -60,20 +131,50 @@ Return ONLY valid JSON with this exact schema (no markdown, no explanation):
   ]
 }}"""
 
-    try:
-        response = client.messages.create(
-            model=MODEL,
-            max_tokens=4096,
-            messages=[{"role": "user", "content": prompt}],
-        )
-        text = response.content[0].text
-        data = json.loads(text)
-        roles = [StudentRole(**r) for r in data["roles"]]
-        script = [ScriptLine(**s) for s in data["script"]]
-        return _assign_tables(roles, script, num_tables)
-    except Exception as e:
-        print(f"Claude API error, using fallback: {e}")
+
+async def generate_roles_and_script(
+    topic: Topic, group_size: int = 4, num_tables: int = 3,
+) -> tuple[list[StudentRole], list[ScriptLine]]:
+    total_students = group_size * num_tables
+
+    if not client:
         return _load_fallback(num_tables)
+
+    expert_cards = _load_expert_cards(topic.id)
+
+    if expert_cards:
+        # Roles come directly from the JSON — Claude only writes the script
+        roles = _roles_from_expert_cards(expert_cards, num_tables)
+        prompt = _build_script_only_prompt(topic, expert_cards)
+        try:
+            response = client.messages.create(
+                model=MODEL,
+                max_tokens=4096,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            data = json.loads(response.content[0].text)
+            base_script = [ScriptLine(**s) for s in data["script"]]
+            script = _replicate_script_for_tables(base_script, len(expert_cards), num_tables)
+            return roles, script
+        except Exception as e:
+            print(f"Claude API error on expert script, using fallback: {e}")
+            return _load_fallback(num_tables)
+    else:
+        prompt = _build_generic_prompt(topic, total_students, num_tables)
+        try:
+            response = client.messages.create(
+                model=MODEL,
+                max_tokens=4096,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            text = response.content[0].text
+            data = json.loads(text)
+            roles = [StudentRole(**r) for r in data["roles"]]
+            script = [ScriptLine(**s) for s in data["script"]]
+            return _assign_tables(roles, script, num_tables)
+        except Exception as e:
+            print(f"Claude API error, using fallback: {e}")
+            return _load_fallback(num_tables)
 
 
 def _load_fallback(num_tables: int = 3) -> tuple[list[StudentRole], list[ScriptLine]]:

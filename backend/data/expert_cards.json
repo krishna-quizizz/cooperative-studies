@@ -1,0 +1,84 @@
+{
+  "ceta-2030": {
+    "project_metadata": {
+      "title": "CETA 2030: The Green Trade-Off",
+      "curriculum_alignment": "TEKS Grade 8 Social Studies §113.20.b.15 / Algebra 1 §111.39",
+      "technique": "Jigsaw II - Expert Knowledge Distribution",
+      "conflict_type": "Multi-Stakeholder Optimization"
+    },
+    "expert_cards": [
+      {
+        "role_id": "labor_rep",
+        "name": "Alex",
+        "title": "Labor Union Representative",
+        "persona": "Advocate for 200,000 'Battery Belt' workers. Focused on domestic job security and preventing factory offshoring.",
+        "key_data": [
+          {
+            "metric": "The 10k Rule",
+            "value": "Every 5% drop in tariff below 40% results in 10,000 domestic job losses."
+          },
+          {
+            "metric": "Red Line",
+            "value": "A 10% tariff leads to 60,000 immediate layoffs. This is unacceptable."
+          }
+        ],
+        "hidden_insight": "Domestic factories are willing to accept lower tariffs if they receive $500M in 'Retooling Grants' to modernize their production lines.",
+        "primary_goal": "Maintain a tariff above 30% OR secure a guarantee for modernization funding."
+      },
+      {
+        "role_id": "consumer_advocate",
+        "name": "Taylor",
+        "title": "Consumer Advocate",
+        "persona": "Voice for Texas middle-class families. Focused on the 'Pocketbook' and preventing utility bill spikes.",
+        "key_data": [
+          {
+            "metric": "The Utility Gap",
+            "value": "A 40% tariff adds $150/month to the average family's electric bill due to grid storage costs."
+          },
+          {
+            "metric": "Voter Threshold",
+            "value": "Public support for green policy collapses if monthly bill increases exceed $20."
+          }
+        ],
+        "hidden_insight": "A 15% tariff is the maximum level where the monthly bill increase remains under $20.",
+        "primary_goal": "Keep the tariff under 15% to ensure affordability for the general public."
+      },
+      {
+        "role_id": "diplomat",
+        "name": "Sam",
+        "title": "State Department Diplomat",
+        "persona": "International relations specialist. Focused on preventing retaliatory trade wars that damage the Texas economy.",
+        "key_data": [
+          {
+            "metric": "The Beef Warning",
+            "value": "Foreign partners will trigger a 'Retaliatory Tax' on Texas Beef if the Lithium tariff exceeds 15%."
+          },
+          {
+            "metric": "Economic Impact",
+            "value": "Retaliation would cost Texas ranchers and farmers $2 Billion in lost exports annually."
+          }
+        ],
+        "hidden_insight": "Trading partners will ignore tariffs below 15% as 'standard protectionism,' but anything above 16% is seen as an act of economic war.",
+        "primary_goal": "Finalize a deal at exactly 15% or lower to protect the agricultural sector."
+      },
+      {
+        "role_id": "climate_scientist",
+        "name": "Maya",
+        "title": "Lead Climate Scientist",
+        "persona": "Strategist for the 2035 Net Zero initiative. Focused on the speed of EV adoption and lowering carbon emissions.",
+        "key_data": [
+          {
+            "metric": "Adoption Curve",
+            "value": "At a 40% tariff, EV adoption drops by 60%, causing the U.S. to miss carbon targets by a decade."
+          },
+          {
+            "metric": "Revenue Potential",
+            "value": "A 15% tariff on current import volumes generates $600 Million in new government revenue."
+          }
+        ],
+        "hidden_insight": "Strategic Fund (Section B) allows tariff revenue to be legally diverted into 'Innovation Grants' for domestic battery retooling.",
+        "primary_goal": "Optimize for a 10-15% tariff to maximize adoption while using the $600M revenue to satisfy Labor interests."
+      }
+    ]
+  }
+}
